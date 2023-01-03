@@ -155,6 +155,7 @@ class AppContext {
 	 * @deprecated Use get_loader instead.
 	 */
 	public function getLoader( $key ) {
+		_deprecated_function( __METHOD__, '0.8.4', __CLASS__ . '::get_loader()' );
 		return $this->get_loader( $key );
 	}
 
@@ -176,11 +177,11 @@ class AppContext {
 	/**
 	 * Returns the $args for the connection the field is a part of
 	 *
-	 * @return array|mixed
-	 *
 	 * @deprecated use get_connection_args() instead
+	 * @return array|mixed
 	 */
 	public function getConnectionArgs() {
+		_deprecated_function( __METHOD__, '0.8.4', __CLASS__ . '::get_connection_args()' );
 		return $this->get_connection_args();
 	}
 
@@ -200,7 +201,6 @@ class AppContext {
 	 */
 	public function get_current_connection() {
 		return isset( $this->currentConnection ) ? $this->currentConnection : null;
-
 	}
 
 	/**

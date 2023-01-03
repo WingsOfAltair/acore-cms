@@ -16,25 +16,39 @@ class UniformResourceIdentifiable {
 	 * Registers the UniformResourceIdentifiable Interface to the Schema.
 	 *
 	 * @param TypeRegistry $type_registry
-	 *
 	 * @return void
 	 */
 	public static function register_type( TypeRegistry $type_registry ) {
 		register_graphql_interface_type(
 			'UniformResourceIdentifiable',
 			[
+				'interfaces'  => [ 'Node' ],
 				'description' => __( 'Any node that has a URI', 'wp-graphql' ),
 				'fields'      => [
-					'uri' => [
+					'uri'           => [
 						'type'        => 'String',
 						'description' => __( 'The unique resource identifier path', 'wp-graphql' ),
 					],
-					'id'  => [
+					'id'            => [
 						'type'        => [ 'non_null' => 'ID' ],
 						'description' => __( 'The unique resource identifier path', 'wp-graphql' ),
 					],
+					'isContentNode' => [
+						'type'        => [ 'non_null' => 'Boolean' ],
+						'description' => __( 'Whether the node is a Content Node', 'wp-graphql' ),
+						'resolve'     => function ( $node ) {
+							return $node instanceof Post;
+						},
+					],
+					'isTermNode'    => [
+						'type'        => [ 'non_null' => 'Boolean' ],
+						'description' => __( 'Whether the node is a Term', 'wp-graphql' ),
+						'resolve'     => function ( $node ) {
+							return $node instanceof Term;
+						},
+					],
 				],
-				'resolveType' => function( $node ) use ( $type_registry ) {
+				'resolveType' => function ( $node ) use ( $type_registry ) {
 
 					switch ( true ) {
 						case $node instanceof Post:
@@ -43,9 +57,9 @@ class UniformResourceIdentifiable {
 							$type             = $type_registry->get_type( $post_type_object->graphql_single_name );
 							break;
 						case $node instanceof Term:
-							/** @var WP_Taxonomy $taxonomy_object */
-							$taxonomy_object = get_taxonomy( $node->taxonomyName );
-							$type            = $type_registry->get_type( $taxonomy_object->graphql_single_name );
+							/** @var WP_Taxonomy $tax_object */
+							$tax_object = get_taxonomy( $node->taxonomyName );
+							$type       = $type_registry->get_type( $tax_object->graphql_single_name );
 							break;
 						case $node instanceof User:
 							$type = $type_registry->get_type( 'User' );
@@ -58,7 +72,6 @@ class UniformResourceIdentifiable {
 					}
 
 					return $type;
-
 				},
 			]
 		);

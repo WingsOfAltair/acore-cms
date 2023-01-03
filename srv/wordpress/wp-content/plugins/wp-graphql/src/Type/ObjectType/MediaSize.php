@@ -34,14 +34,14 @@ class MediaSize {
 					'mimeType'  => [
 						'type'        => 'String',
 						'description' => __( 'The mime type of the referenced size', 'wp-graphql' ),
-						'resolve'     => function( $image, $args, $context, $info ) {
+						'resolve'     => function ( $image, $args, $context, $info ) {
 							return ! empty( $image['mime-type'] ) ? $image['mime-type'] : null;
 						},
 					],
 					'fileSize'  => [
 						'type'        => 'Int',
 						'description' => __( 'The filesize of the resource', 'wp-graphql' ),
-						'resolve'     => function( $image, $args, $context, $info ) {
+						'resolve'     => function ( $image, $args, $context, $info ) {
 
 							$src_url = null;
 
@@ -58,19 +58,17 @@ class MediaSize {
 					'sourceUrl' => [
 						'type'        => 'String',
 						'description' => __( 'The url of the referenced size', 'wp-graphql' ),
-						'resolve'     => function( $image, $args, $context, $info ) {
+						'resolve'     => function ( $image, $args, $context, $info ) {
 
 							$src_url = null;
 
 							if ( ! empty( $image['ID'] ) ) {
 								$src = wp_get_attachment_image_src( absint( $image['ID'] ), $image['name'] );
-								if ( is_array( $src ) && isset( $src[0] ) && ! empty( $src[0] ) ) {
+								if ( ! empty( $src ) ) {
 									$src_url = $src[0];
 								}
-							} else {
-								if ( ! empty( $image['file'] ) ) {
-									$src_url = $image['file'];
-								}
+							} elseif ( ! empty( $image['file'] ) ) {
+								$src_url = $image['file'];
 							}
 
 							return $src_url;

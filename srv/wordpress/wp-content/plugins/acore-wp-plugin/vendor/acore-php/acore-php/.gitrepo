@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/azerothcore/acore-php-framework
+	branch = master
+	commit = 7d27d0a3d6e79e113b7a8e222ea972823a109b16
+	parent = d6e4a9f73c7409f65de3ce50c1773a8a9e7cd7b9
+	method = merge
+	cmdver = 0.4.1
